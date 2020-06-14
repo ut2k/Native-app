@@ -122,20 +122,55 @@ const App = () => {
       setTitle(!title);
       alert("Submitted the Task!");
     }
-
+    const [value, onChangeText] = useState("")
+    const [intensity, onChangeIntensity] = useState("")
+    const [Notes, onChnageNotes] = useState("")
+    function Submit()
+    {
+      navigation.navigate('Home')
+    }
     return (
       <ScrollView style={{ flex: 1 }}>
 
-        <Card title="Enter the Task Information:">
+        <Card title="Enter today's log:">
         
       <View>
-        <Text>Enter the  :</Text>
-        <TextInput value={"he;;a"}
+        <Text style={{marginBottom: 5}}>Intensity :</Text>
+        <TextInput value={value}
           onChangeText={text => onChangeText(text)}
-          placeholder={"sucks"}
+          placeholder={"eg 9/10"}
           autoCorrect={true}
         />
         <Text>{"\n"}</Text>
+      </View>
+      <View>
+        <Text style={{marginBottom: 5}}> Date :</Text>
+        <TextInput 
+        style={{height: 30}}
+        value={intensity}
+          onChangeText={text => onChangeIntensity(text)}
+          placeholder={"eg June 15th"}
+          autoCorrect={true}
+        />
+        <Text>{"\n"}</Text>
+      </View>
+      <View>
+        <Text style={{marginBottom: 5}}> Notes :</Text>
+        <TextInput value={Notes}
+         multiline
+         numberOfLines={4}
+          onChangeText={text => onChnageNotes(text)}
+          placeholder={"eg Nothing happened."}
+          autoCorrect={true}
+        />
+        <Text>{"\n"}</Text>
+        <Button
+         raised={true}
+          title="Submit"
+          onPress={() =>
+            Submit()
+          }
+        />
       </View>
         </Card>
       </ScrollView>
