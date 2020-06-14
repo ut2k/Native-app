@@ -28,7 +28,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import { dbLog } from "./src/config"
-import { ListItem } from 'react-native-elements'
+import { ListItem, Divider, Card } from 'react-native-elements'
 
 import {
   LearnMoreLinks,
@@ -63,7 +63,7 @@ const App = () => {
               <Text>Meditate</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonContainer}>
-              <Text>Exercies</Text>
+              <Text>Exercises</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -82,6 +82,17 @@ const App = () => {
     return (
       <View>
         <Button
+        raised={true}
+        type={"clear"}
+        color="#841584"
+          title="Add Data"
+          onPress={() =>
+            navigation.navigate('Add')
+          }
+          style={{marginBottom: 5, marginTop: 5}}
+        />
+        <Button
+         raised={true}
           title="Go to My profile"
           onPress={() =>
             navigation.navigate('Profile', { name: 'Utkarsh' })
@@ -100,20 +111,12 @@ const App = () => {
             ))
           }
         </View>
-        {/* <SafeAreaView style={styles.container}>
-      <FlatList
-        data={list}
-        renderItem={({ item }) => <renderItem item={item} />}
-        keyExtractor={item => item.id}
-      />
-    </SafeAreaView> */}
-
 
       </View>
     );
   }
 
-  function HomeScreen({ navigation }) {
+  function Add({ navigation }) {
     const [title, setTitle] = useState(false);
     const toggle = () => {
       setTitle(!title);
@@ -122,21 +125,18 @@ const App = () => {
 
     return (
       <ScrollView style={{ flex: 1 }}>
-        <Header
-          centerComponent={{ text: "SelfCare", style: { color: '#fff' } }}
-          rightComponent={<Avatar
-            rounded
-            onPress={() => navigation.navigate('Profile')}
-            source={require('./12.jpg')}
-            activeOpacity={0.3}
-            showEditButton
-          />}
-        />
-        <Card title="Enter the Task Information:">
-          <View style={styles.container} >
-          </View>
 
-          <CreateTask navigation={navigation} />
+        <Card title="Enter the Task Information:">
+        
+      <View>
+        <Text>Enter the  :</Text>
+        <TextInput value={"he;;a"}
+          onChangeText={text => onChangeText(text)}
+          placeholder={"sucks"}
+          autoCorrect={true}
+        />
+        <Text>{"\n"}</Text>
+      </View>
         </Card>
       </ScrollView>
     );
@@ -151,6 +151,7 @@ const App = () => {
             options={{ title: 'Welcome' }}
           />
           <Stack.Screen name="Profile" component={DetailsScreen} />
+          <Stack.Screen name="Add" component={Add} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
