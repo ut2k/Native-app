@@ -1,5 +1,5 @@
 // import React from 'react';
-// import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Image, Header, Input, Button, ButtonGroup, Avatar, Badge, Icon, Overlay } from 'react-native-elements'
 // import { Card, ListItem } from 'react-native-elements'
 // import { ScrollView, StyleSheet, Text, View, TextInput, Modal, TouchableHighlight, TouchableOpacity } from 'react-native';
@@ -27,6 +27,8 @@ import {
   StatusBar,
   TouchableOpacity
 } from 'react-native';
+import { dbLog } from "./src/config"
+import { ListItem } from 'react-native-elements'
 
 import {
   LearnMoreLinks,
@@ -39,23 +41,29 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 const App = () => {
+  const [logg, setLog] = useState("")
+  useEffect(() => {
+    const handleData = snap => {
+      if (snap.val()) setLog(snap.val());
+    }
+    dbLog.on('value', handleData, error => alert(error));
+    return () => { dbLog.off('value', handleData); };
+  }, []);
 
   function DetailsScreen() {
     return (
       <View style={styles.container}>
-        <View style={styles.header}></View>
-        <Image style={styles.avatar} rounded source={require('./128.jpg')} />
-        <View style={styles.body}>
+        <View style={{ marginTop: 100 }}>
+          <Image style={styles.avatar} rounded source={require('./12.jpg')} />
           <View style={styles.bodyContent}>
-            <Text style={styles.name}>John Smith</Text>
-            <Text style={styles.info}>Caregiver</Text>
-            <Text style={styles.description}>{"I am a spcailised caretaker and a livein caretaker for Mr. Ammon Erhmentraut. I work 8 hours per day from 8am - 8pm from Monday - Staurday. Special skills include: certification in emergency procedures, and over 8+ years of experience." + "\n"}</Text>
-
+            <Text style={styles.name}>Utkarsh Mishra</Text>
+            <Text style={styles.info}>Log</Text>
+            <Text style={styles.description}>{"This is my headache log for the summer of 2020. COVID-19 had really messed up my life and this development is my way of coping with everything." + "\n"}</Text>
             <TouchableOpacity style={styles.buttonContainer}>
-              <Text>Followers</Text>
+              <Text>Meditate</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonContainer}>
-              <Text>Following</Text>
+              <Text>Exercies</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -64,20 +72,43 @@ const App = () => {
   }
 
   function Home({ navigation }) {
+
     const [value, onChangeText] = React.useState("");
+    const something = Object.values(logg)
+    something.forEach(l => {
+      console.log(l)
+    });
+
     return (
       <View>
-      <Button
-        title="Go to My profile"
-        onPress={() =>
-          navigation.navigate('Profile', { name: 'Utkarsh' })
-        }
+        <Button
+          title="Go to My profile"
+          onPress={() =>
+            navigation.navigate('Profile', { name: 'Utkarsh' })
+          }
+        />
+
+        <View>
+          {
+            something.map((l, i) => (
+              <ListItem
+                key={i}
+                title={"Date: " + l.Date + ", Intensity: " + l.Intensity + "/10"}
+                subtitle={l.Notes}
+                bottomDivider
+              />
+            ))
+          }
+        </View>
+        {/* <SafeAreaView style={styles.container}>
+      <FlatList
+        data={list}
+        renderItem={({ item }) => <renderItem item={item} />}
+        keyExtractor={item => item.id}
       />
-      <TextInput
-      style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-      onChangeText={text => onChangeText(text)}
-      value={value}
-    />
+    </SafeAreaView> */}
+
+
       </View>
     );
   }
@@ -96,7 +127,7 @@ const App = () => {
           rightComponent={<Avatar
             rounded
             onPress={() => navigation.navigate('Profile')}
-            source={require('./128.jpg')}
+            source={require('./12.jpg')}
             activeOpacity={0.3}
             showEditButton
           />}
@@ -180,10 +211,10 @@ const styles = StyleSheet.create({
     borderRadius: 63,
     borderWidth: 0,
     borderColor: "white",
-    marginBottom: 10,
+    marginBottom: -60,
     alignSelf: 'center',
     position: 'relative',
-    marginTop: -70
+    marginTop: 0
   },
   name: {
     fontSize: 22,
