@@ -1,38 +1,11 @@
 // import React from 'react';
 // import { useState, useEffect } from 'react';
- import { Image, Header, Input, Button, ButtonGroup, Avatar, Badge, Icon, Overlay } from 'react-native-elements'
+import { Image, Header, Input, Button, ButtonGroup, Avatar, Badge, Icon, Overlay } from 'react-native-elements'
 // import { Card, ListItem } from 'react-native-elements'
 // import { ScrollView, StyleSheet, Text, View, TextInput, Modal, TouchableHighlight, TouchableOpacity } from 'react-native';
 // import 'react-native-gesture-handler';
 // import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
-
-
-// function App {
-//   return(
-    
-//     <View style={styles.container}>
-//       <View style={styles.header}></View>
-//       <Image style={styles.avatar} rounded source={require('./128.jpg')} />
-//       <View style={styles.body}>
-//         <View style={styles.bodyContent}>
-//           <Text style={styles.name}>John Smith</Text>
-//           <Text style={styles.info}>Caregiver</Text>
-//           <Text style={styles.description}>{"I am a spcailised caretaker and a livein caretaker for Mr. Ammon Erhmentraut. I work 8 hours per day from 8am - 8pm from Monday - Staurday. Special skills include: certification in emergency procedures, and over 8+ years of experience."+"\n"}</Text>
-
-//           <TouchableOpacity style={styles.buttonContainer}>
-//             <Text>Followers</Text>
-//           </TouchableOpacity>
-//           <TouchableOpacity style={styles.buttonContainer}>
-//             <Text>Following</Text>
-//           </TouchableOpacity>
-//         </View>
-//       </View>
-//     </View>
-//   )
-
-// }
-// export default App;
 
 /**
  * Sample React Native App
@@ -40,6 +13,7 @@
  *
  * @format
  * @flow strict-local
+ * @refresh reset
  */
 
 import React from 'react';
@@ -48,6 +22,7 @@ import {
   StyleSheet,
   ScrollView,
   View,
+  TextInput,
   Text,
   StatusBar,
   TouchableOpacity
@@ -59,9 +34,12 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
-
+import { createStackNavigator } from '@react-navigation/stack';
+const Stack = createStackNavigator();
 const App = () => {
+
   function DetailsScreen() {
     return (
       <View style={styles.container}>
@@ -71,8 +49,8 @@ const App = () => {
           <View style={styles.bodyContent}>
             <Text style={styles.name}>John Smith</Text>
             <Text style={styles.info}>Caregiver</Text>
-            <Text style={styles.description}>{"I am a spcailised caretaker and a livein caretaker for Mr. Ammon Erhmentraut. I work 8 hours per day from 8am - 8pm from Monday - Staurday. Special skills include: certification in emergency procedures, and over 8+ years of experience."+"\n"}</Text>
-  
+            <Text style={styles.description}>{"I am a spcailised caretaker and a livein caretaker for Mr. Ammon Erhmentraut. I work 8 hours per day from 8am - 8pm from Monday - Staurday. Special skills include: certification in emergency procedures, and over 8+ years of experience." + "\n"}</Text>
+
             <TouchableOpacity style={styles.buttonContainer}>
               <Text>Followers</Text>
             </TouchableOpacity>
@@ -84,15 +62,68 @@ const App = () => {
       </View>
     );
   }
+
+  function Home({ navigation }) {
+    const [value, onChangeText] = React.useState("");
+    return (
+      <View>
+      <Button
+        title="Go to My profile"
+        onPress={() =>
+          navigation.navigate('Profile', { name: 'Utkarsh' })
+        }
+      />
+      <TextInput
+      style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+      onChangeText={text => onChangeText(text)}
+      value={value}
+    />
+      </View>
+    );
+  }
+
+  function HomeScreen({ navigation }) {
+    const [title, setTitle] = useState(false);
+    const toggle = () => {
+      setTitle(!title);
+      alert("Submitted the Task!");
+    }
+
+    return (
+      <ScrollView style={{ flex: 1 }}>
+        <Header
+          centerComponent={{ text: "SelfCare", style: { color: '#fff' } }}
+          rightComponent={<Avatar
+            rounded
+            onPress={() => navigation.navigate('Profile')}
+            source={require('./128.jpg')}
+            activeOpacity={0.3}
+            showEditButton
+          />}
+        />
+        <Card title="Enter the Task Information:">
+          <View style={styles.container} >
+          </View>
+
+          <CreateTask navigation={navigation} />
+        </Card>
+      </ScrollView>
+    );
+  }
   return (
-     <>
-     <NavigationContainer>
-        <DetailsScreen />
-    </NavigationContainer>
-          
-     
-     </>
-);
+    <>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{ title: 'Welcome' }}
+          />
+          <Stack.Screen name="Profile" component={DetailsScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
