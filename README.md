@@ -1,4 +1,4 @@
-# Native-app
+# ClearCare - (Headache logs for migraines)
 
 To run the ios app on your simulator (Only if you're on MacOS):
 
