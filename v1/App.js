@@ -75,9 +75,9 @@ const App = () => {
 
     const [value, onChangeText] = React.useState("");
     const something = Object.values(logg)
-    something.forEach(l => {
-      console.log(l)
-    });
+    // something.forEach(l => {
+    //   console.log(l)
+    // });
 
     return (
       <View>
@@ -127,7 +127,17 @@ const App = () => {
     const [Notes, onChnageNotes] = useState("")
     function Submit()
     {
-      navigation.navigate('Home')
+      if (value != "" && intensity != "" && Notes != "")
+      {
+        dbLog.push({
+          "Date" : intensity || null,
+          "Intensity" : value || null,
+          "Notes" : Notes || null
+        })
+        navigation.navigate('Home')
+      }
+      
+
     }
     return (
       <ScrollView style={{ flex: 1 }}>
@@ -137,6 +147,8 @@ const App = () => {
       <View>
         <Text style={{marginBottom: 5}}>Intensity :</Text>
         <TextInput value={value}
+         multiline
+         numberOfLines={4}
           onChangeText={text => onChangeText(text)}
           placeholder={"eg 9/10"}
           autoCorrect={true}
@@ -146,7 +158,8 @@ const App = () => {
       <View>
         <Text style={{marginBottom: 5}}> Date :</Text>
         <TextInput 
-        style={{height: 30}}
+         multiline
+         numberOfLines={4}
         value={intensity}
           onChangeText={text => onChangeIntensity(text)}
           placeholder={"eg June 15th"}
